@@ -206,4 +206,8 @@ input {
     padding: 2rem 1.6rem;
     margin-top: -3.2rem;
   }
+
+  .row {
+    padding: 2.6rem 2.6rem 2.6rem 2.6rem;
+  }
 }

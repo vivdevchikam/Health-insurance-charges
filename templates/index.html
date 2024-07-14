@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/style.css')}}"
+    />
+    <title>Housing prices</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="card">
+          <div class="card-header">
+            <h1 class="h1-header">Health Insurance Charges</h1>
+            <h3 class="h3-header">U.S.A 🦅</h3>
+          </div>
+          <div class="card-body">
+            <form method="post" accept-charset="utf-8">
+              <div class="row-body">
+                <div class="col-body">
+                  <label for="gender">
+                    <b>Gender (Male and Female): </b>
+                  </label>
+                  <select
+                    name="gender"
+                    id="gender"
+                    class="selectpicker form-control mb-2 text-center"
+                    required="1"
+                  >
+                    {% for gender in genders%}
+                    <option value="{{gender}}">{{gender}}</option>
+                    {%endfor%}
+                  </select>
+                </div>
+                <div class="col-body">
+                  <label for="region">
+                    <b>Region: </b>
+                  </label>
+                  <select
+                    name="region"
+                    id="region"
+                    class="selectpicker form-control mb-2 text-center"
+                    required="1"
+                  >
+                    {% for region in regions%}
+                    <option value="{{region}}">{{region}}</option>
+                    {%endfor%}
+                  </select>
+                </div>
+                <div class="col-body">
+                  <label for="smoker">
+                    <b>Smoker :</b>
+                  </label>
+                  <select
+                    name="smoker"
+                    id="smoker"
+                    class="selectpicker form-control mb-2 text-center"
+                    required="1"
+                  >
+                    {% for smoker in smokers%}
+                    <option value="{{smoker}}">{{smoker}}</option>
+                    {%endfor%}
+                  </select>
+                </div>
+                <div class="col-body">
+                  <label for="bmi">
+                    <b>BMI (Body mass index) :</b>
+                  </label>
+                  <input
+                    name="bmi"
+                    id="bmi"
+                    class="selectpicker form-control mb-2 text-center"
+                    required="1"
+                    placeholder="Body mass index"
+                    type="number"
+                  />
+                </div>
+                <div class="col-body">
+                  <label for="age">
+                    <b>Age (above 16) :</b>
+                  </label>
+                  <input
+                    name="age"
+                    id="age"
+                    class="selectpicker form-control mb-2 text-center"
+                    required="1"
+                    placeholder="Age"
+                    type="number"
+                  />
+                </div>
+                <div class="col-body">
+                  <label for="children">
+                    <b>Children :</b>
+                  </label>
+                  <input
+                    name="children"
+                    id="children"
+                    class="selectpicker form-control mb-2 text-center"
+                    required="1"
+                    placeholder="Children"
+                    type="number"
+                  />
+                </div>
+                <div class="btn-container">
+                  <button class="btn" onclick="send_data()">
+                    Predict Price
+                  </button>
+                </div>
+              </div>
+            </form>
+            <br />
+            <div class="predict-container">
+              <h3 class="h3-predict">
+                <span id="prediction"></span>
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function form_handler(event) {
+        event.preventDefault(); // Don't submit the form normally
+      }
+      function send_data() {
+        document.querySelector("form").addEventListener("submit", form_handler);
+
+        const fd = new FormData(document.querySelector("form"));
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/predict", true);
+
+        document.getElementById("prediction").innerHTML =
+          "Wait Predicting Price!...";
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState == XMLHttpRequest.DONE) {
+            if (xhr.responseText.includes("Error")) {
+              // Display error message
+              document.getElementById("prediction").innerHTML =
+                "Error: You have entered wrong value, Please correct them";
+            } else {
+              document.getElementById("prediction").innerHTML =
+                "Prediction: $" +
+                xhr.responseText +
+                " Annual insurance charges";
+            }
+          }
+        };
+        xhr.onload = function () {};
+        xhr.send(fd);
+      }
+    </script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

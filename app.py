@@ -16,7 +16,7 @@ model = joblib.load('RandomForestRegressor.joblib')
 def index():
   # Gender = 0
   gender = sorted(data['sex'].unique())
-  gender.insert(0, 'Gender')
+  gender.insert(0, ' ')
   region = sorted(data['region'].unique())
   region.insert(0, "Region")
   smoker = sorted(data['smoker'].unique())

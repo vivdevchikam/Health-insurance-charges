@@ -127,7 +127,6 @@
       }
       function send_data() {
         document.querySelector("form").addEventListener("submit", form_handler);
-
         const form = document.querySelector("form");
 
         const inputs = form.elements;
@@ -158,12 +157,11 @@
                   "Error: You have entered wrong value, Please correct them";
               } else {
                 document.getElementById("prediction").innerHTML =
-                  "Prediction: $" +
-                  xhr.responseText +
-                  " Annual insurance charges";
+                  "Prediction: ₹" + xhr.responseText + " Annual charges";
               }
             }
           };
+
           xhr.onload = function () {};
           xhr.send(fd);
           document.querySelector("form").reset();

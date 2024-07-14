@@ -128,28 +128,46 @@
       function send_data() {
         document.querySelector("form").addEventListener("submit", form_handler);
 
-        const fd = new FormData(document.querySelector("form"));
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "/predict", true);
+        const form = document.querySelector("form");
 
-        document.getElementById("prediction").innerHTML =
-          "Wait Predicting Price!...";
-        xhr.onreadystatechange = function () {
-          if (xhr.readyState == XMLHttpRequest.DONE) {
-            if (xhr.responseText.includes("Error")) {
-              // Display error message
-              document.getElementById("prediction").innerHTML =
-                "Error: You have entered wrong value, Please correct them";
-            } else {
-              document.getElementById("prediction").innerHTML =
-                "Prediction: $" +
-                xhr.responseText +
-                " Annual insurance charges";
-            }
+        const inputs = form.elements;
+        let isEmpty = false;
+
+        // Check for empty values
+        for (const input of inputs) {
+          if (input.value === " ") {
+            isEmpty = true;
+            break;
           }
-        };
-        xhr.onload = function () {};
-        xhr.send(fd);
+        }
+        if (isEmpty) {
+          alert("Please fill in all the required values!");
+          isEmpty = false;
+        } else {
+          const fd = new FormData(document.querySelector("form"));
+          const xhr = new XMLHttpRequest();
+          xhr.open("POST", "/predict", true);
+
+          document.getElementById("prediction").innerHTML =
+            "Wait Predicting Price!...";
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+              if (xhr.responseText.includes("Error")) {
+                // Display error message
+                document.getElementById("prediction").innerHTML =
+                  "Error: You have entered wrong value, Please correct them";
+              } else {
+                document.getElementById("prediction").innerHTML =
+                  "Prediction: $" +
+                  xhr.responseText +
+                  " Annual insurance charges";
+              }
+            }
+          };
+          xhr.onload = function () {};
+          xhr.send(fd);
+          document.querySelector("form").reset();
+        }
       }
     </script>
 
